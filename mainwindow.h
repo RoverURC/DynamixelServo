@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 #include <dynamixelservo.h>
 #include <QMainWindow>
+#include <QtCore/QtGlobal>
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 namespace Ui {
@@ -17,12 +18,12 @@ public:
   ~MainWindow();
 
 private:
-  //bool initializePort(); //Zaimplementuj tą funkcję ( true if succesfull)
-
   Ui::MainWindow *ui;
   QSerialPort *myPort;
   //QSerialPortInfo myPortInfo;
   DynamixelServo *myServo;
+
+  bool initializePort();
 };
 
 #endif // MAINWINDOW_H
