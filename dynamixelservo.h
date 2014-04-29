@@ -2,7 +2,7 @@
 #define DYNAMIXELSERVO_H
 
 #include <QObject>
-#include <QtSerialPort/QSerialPort>
+#include <qextserialport.h>
 #include <QByteArray>
 #include <QBitArray>
 #include <QTimer>
@@ -32,7 +32,7 @@ class DynamixelServo : public QObject
   Q_OBJECT
 
 public:
-  explicit DynamixelServo(quint8 id, QSerialPort *device, QObject *parent = 0);
+  explicit DynamixelServo(quint8 id, QextSerialPort *device, QObject *parent = 0);
   ~DynamixelServo();
 
   // used during servo mode
@@ -76,7 +76,7 @@ public:
 
 
 private:
-  QSerialPort *device;  //Serial Port Device ( One for all UartServos)
+  QextSerialPort *device;  //Serial Port Device ( One for all UartServos)
   quint8 id; //1 - fabric, 2-250
   QByteArray byteArray; //array used for sending, counting CRC etc data
   QTimer *timer;

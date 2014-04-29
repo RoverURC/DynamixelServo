@@ -21,7 +21,7 @@
 #define ASK_INFO_RET 1
 #define ALL_INFO_RET 2
 
-DynamixelServo::DynamixelServo(quint8 id, QSerialPort *device, QObject *parent) :  QObject(parent)
+DynamixelServo::DynamixelServo(quint8 id, QextSerialPort *device, QObject *parent) :  QObject(parent)
 {
     timer = new QTimer(this);
     this->device = device; //connects device

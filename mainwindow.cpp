@@ -7,7 +7,8 @@
 MainWindow::MainWindow(QWidget *parent) :  QMainWindow(parent),  ui(new Ui::MainWindow),  myTimer(new QTimer(this))
 {
   ui->setupUi(this);
-  myPort = new QSerialPort(this);
+  myPort=new QextSerialPort(QextSerialPort::EventDriven,this); //Make new QextSerialPort then close it
+  myPort->close();
 
   connect(myPort,SIGNAL(readyRead()),this,SLOT(read()));
   //connect(myPort, SIGNAL(readChannelFinished()), this, SLOT(readFinished()));
@@ -16,31 +17,30 @@ MainWindow::MainWindow(QWidget *parent) :  QMainWindow(parent),  ui(new Ui::Main
   angle =0;
   speed = 0;
 
-  initializePort("COM3");
+  initializePort("/dev/ttyAMA0");
+
   myServo = new DynamixelServo(1,myPort);
   myServo->setStatusReturnPackage(2, true);
 }
+
+
 bool MainWindow::initializePort(QString portName)
 {
-
-    myPort->setPortName((QString)portName);
-    if(myPort->open(QIODevice::ReadWrite))
-    {   if(myPort->setBaudRate(QSerialPort::Baud115200)&&
-                myPort->setDataBits(QSerialPort::Data8)&&
-                myPort->setParity(QSerialPort::NoParity)&&
-                myPort->setStopBits(QSerialPort::OneStop)&&
-                myPort->setFlowControl(QSerialPort::NoFlowControl))
-            return true;
-        else
-        {   myPort->close();
-            return false;
-        }
-    }
-    else
-    {   myPort->error();
-        return false;
-    }
-    myPort->setDataTerminalReady(true);
+  delete myPort;
+  myPort= new QextSerialPort(portName);
+  myPort->setBaudRate(BAUD9600);
+  myPort->setFlowControl(FLOW_OFF);
+  myPort->setParity(PAR_NONE);
+  myPort->setDataBits(DATA_8);
+  myPort->setStopBits(STOP_1);
+  //port->setQueryMode(QextSerialPort::Polling);
+  myPort->close();
+  if (myPort->open(QIODevice::ReadWrite) == true){
+      qDebug("port is opened");
+  }
+  else{
+      qDebug("port is not open");
+  }
     return true;
 }
 bool MainWindow::reinitializePort(QString portName)

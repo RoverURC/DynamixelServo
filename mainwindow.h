@@ -1,10 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <dynamixelservo.h>
+#include <qextserialport.h>
 #include <QMainWindow>
 #include <QtCore/QtGlobal>
-#include <QtSerialPort/QSerialPort>
-#include <QtSerialPort/QSerialPortInfo>
 #include <QTimer>
 
 namespace Ui {
@@ -21,7 +20,7 @@ public:
 
 private:
   Ui::MainWindow *ui;
-  QSerialPort *myPort;
+  QextSerialPort *myPort;
 
   DynamixelServo *myServo;
   QTimer *myTimer;
@@ -34,7 +33,7 @@ private:
 public slots:
   void read();
   void write();
-  void readFinished();
+  //void readFinished();
 
 private slots:
   void on_pushButtonVMax_clicked();
